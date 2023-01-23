@@ -23,6 +23,8 @@ configMapGenerator:
       - web_client.uri=http://chat-socket.io
       - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html
 
+resources:
+  - coredns.yaml
 
 images:
   - name: gateway-server
@@ -40,3 +42,13 @@ images:
   - name: websocket-server
     newName: chatsocket/websocket-server
     newTag: 1.0-dev
+
+
+# The coredns have to stay on the kube-system namespace
+patchesJson6902:
+  - target:
+      name: coredns
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system
