@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-authorization-db
+  labels:
+    app: identity-authorization-db
+spec:
+  selector:
+    matchLabels:
+      app: identity-authorization-db
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: identity-authorization-db
+    spec:
+      containers:
+        - name: identity-authorization-db
+          image: 'postgres:15-alpine'
+          env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: server.timezone
+            - name: PGTZ
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: server.timezone
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: identity_server.db.db_name
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: chat-socket
+                  key: identity_server.db.user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: chat-socket
+                  key: identity_server.db.password
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - identity-authorization-db
+                topologyKey: kubernetes.io/chat-microservices

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: chat-socket
-data:
-  web-app-uri: "http://chat-socket.io"
-  sso-uri: "http://accounts.chat-socket.io"
-  api-uri: "http://api.chat-socket.io"
-

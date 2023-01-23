@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+bases:
+  - ../../base
+
+secretGenerator:
+  - name: chat-socket
+    literals:
+      - identity_server.db.user=i_admin
+      - identity_server.db.password=1f2d1*e@2e67df
+      - user_management.db.user=u_admin
+      - user_management.db.password=8913JKHF*$$%
+      - artemis_server.broker.user=a_admin
+      - artemis_server.broker.password=kjshdf986+=%
+
+configMapGenerator:
+  - name: chat-socket
+    behavior: merge
+    literals:
+      - identity_server.issuer_uri=http://accounts.chat-socket.io
+      - web_client.uri=http://chat-socket.io
+      - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html

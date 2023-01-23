@@ -37,7 +37,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: web-client
+                name: web-frontend
                 port:
                   number: 80
 
