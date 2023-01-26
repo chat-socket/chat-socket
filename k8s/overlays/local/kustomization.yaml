@@ -22,3 +22,15 @@ configMapGenerator:
       - identity_server.issuer_uri=http://accounts.chat-socket.io
       - web_client.uri=http://chat-socket.io
       - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html
+
+resources:
+  - coredns.yaml
+
+# The coredns have to stay on the kube-system namespace
+patchesJson6902:
+  - target:
+      name: coredns-custom
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: kube-system
