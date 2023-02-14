@@ -25,7 +25,6 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-cd src
 if [[ "$MODE" == "https" ]]; then
      GIT_HOST="https://github.com/chat-socket"
 else
@@ -41,6 +40,9 @@ init_project() {
         git checkout $BRANCH
     fi
 }
+
+mkdir -p src
+cd src
 
 init_project "user-management-service"
 init_project "identity-authorization-server"
