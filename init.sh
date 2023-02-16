@@ -34,15 +34,17 @@ fi
 
 init_project() {
     echo "Initialising $GIT_HOST/$1.git"
-    if [ ! -d "$1" ]
-    then
-        git clone "$GIT_HOST/$1.git"
+    if [ ! -d "$1" ]; then
+        git clone "$GIT_HOST/$1.git" "$1"
         git checkout $BRANCH
+    else
+        cd "$1"
+        git remote set-url origin "$GIT_HOST/$1.git"
+        cd ..
     fi
 }
 
-mkdir -p src
-cd src
+mkdir -p src && cd src
 
 init_project "user-management-service"
 init_project "identity-authorization-server"
