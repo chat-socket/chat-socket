@@ -57,6 +57,7 @@ init_project() {
         cd "$1"
         git remote set-url origin "$GIT_HOST/$1.git"
         git checkout $BRANCH
+        git pull
         cd ..
     fi
 
