@@ -20,10 +20,8 @@ spec:
         - name: user-management-service
           image: 'user-management-service:latest'
           ports:
-            - containerPort: 8090
+            - containerPort: 8080
               name: ingress-port
-            - containerPort: 8081
-              name: actuator-port
           env:
             - name: POSTGRES_HOST
               value: 'user-management-db'
@@ -50,20 +48,18 @@ spec:
                   name: chat-socket
                   key: identity_server.issuer_uri
 
-            - name: JAVA_OPTS
-              value: "-Xmx256m -Xms128m -Xss256k -XX:CompressedClassSpaceSize=32m -XX:-TieredCompilation"
           lifecycle:
             preStop:
               exec:
                 command: [ "sh", "-c", "sleep 10" ]
           readinessProbe:
             httpGet:
-              port: 8081
-              path: /actuator/health/readiness
+              port: 8080
+              path: /q/health/ready
           livenessProbe:
             httpGet:
-              port: 8081
-              path: /actuator/health/liveness
+              port: 8080
+              path: /q/health/live
           resources:
             requests:
               memory: "512Mi"

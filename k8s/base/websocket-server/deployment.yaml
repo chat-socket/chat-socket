@@ -22,8 +22,7 @@ spec:
           ports:
             - containerPort: 8080
               name: ingress-port
-            - containerPort: 8083
-              name: actuator-port
+
           env:
             - name: OAUTH2_ISSUER_URI
               valueFrom:
@@ -31,34 +30,24 @@ spec:
                   name: chat-socket
                   key: identity_server.issuer_uri
 
-            - name: ARTEMIS_BROKER_URL
-              value: "tcp://artemis-server:61616"
-            - name: ARTEMIS_USER
+            - name: KAFKA_BROKER_URI
               valueFrom:
                 secretKeyRef:
                   name: chat-socket
-                  key: artemis_server.broker.user
+                  key: kafka_broker.uri
 
-            - name: ARTEMIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: chat-socket
-                  key: artemis_server.broker.password
-
-            - name: JAVA_OPTS
-              value: "-Xmx256m -Xms128m -Xss256k -XX:CompressedClassSpaceSize=32m -XX:-TieredCompilation"
           lifecycle:
             preStop:
               exec:
                 command: [ "sh", "-c", "sleep 10" ]
           readinessProbe:
             httpGet:
-              port: 8083
-              path: /actuator/health/readiness
+              port: 8080
+              path: /q/health/ready
           livenessProbe:
             httpGet:
-              port: 8083
-              path: /actuator/health/liveness
+              port: 8080
+              path: /q/health/live
           resources:
             requests:
               memory: "256Mi"

@@ -1,7 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dev
 bases:
   - ../../base
 
@@ -23,20 +22,26 @@ configMapGenerator:
       - web_client.uri=http://chat-socket.io
       - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html
 
+resources:
+  - coredns.yaml
+
 images:
   - name: gateway-server
     newName: chatsocket/gateway-server
-    newTag: 1.0-dev
+    newTag: 1.0.0-dev
 
   - name: identity-authorization-server
     newName: chatsocket/identity-authorization-server
-    newTag: 1.0-dev
+    newTag: 1.0.0-dev
 
   - name: user-management-service
     newName: chatsocket/user-management-service
-    newTag: 1.0-dev
+    newTag: 1.0.0-dev
 
   - name: websocket-server
     newName: chatsocket/websocket-server
-    newTag: 1.0-dev
+    newTag: 1.0.0-dev
 
+  - name: web-frontend
+    newName: chatsocket/web-frontend
+    newTag: 1.0.0-dev

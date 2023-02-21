@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# exit when any command fails
+set -e
+
 MODE="https"
 BRANCH=main
+BUILD=false
+VERSION=1.0.0
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
@@ -12,8 +17,17 @@ case $key in
     MODE="ssh"
     shift # past argument
     ;;
+    -db|--docker-build)
+    BUILD=true
+    shift # past argument
+    ;;
     -b|--branch)
     BRANCH="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -v|--version)
+    VERSION="$2"
     shift # past argument
     shift # past value
     ;;
@@ -40,6 +54,12 @@ init_project() {
     else
         cd "$1"
         git remote set-url origin "$GIT_HOST/$1.git"
+        cd ..
+    fi
+
+    if [ "$BUILD" = true ] ; then
+        cd "$1"
+        ./build.sh -v "$VERSION" "${POSITIONAL[@]}"
         cd ..
     fi
 }
