@@ -50,10 +50,13 @@ init_project() {
     echo "Initialising $GIT_HOST/$1.git"
     if [ ! -d "$1" ]; then
         git clone "$GIT_HOST/$1.git" "$1"
+        cd "$1"
         git checkout $BRANCH
+        cd ..
     else
         cd "$1"
         git remote set-url origin "$GIT_HOST/$1.git"
+        git checkout $BRANCH
         cd ..
     fi
 
