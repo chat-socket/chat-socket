@@ -1,6 +1,7 @@
 kind: ConfigMap
 metadata:
   name: broker-config
+  namespace: kafka
 apiVersion: v1
 data:
   init.sh: |-
@@ -17,7 +18,7 @@ data:
     hash kubectl 2>/dev/null || {
       SEDS+=("s/#init#broker.rack=#init#/#init#broker.rack=# kubectl not found in path/")
     } && {
-      ZONE=$(kubectl get node "$NODE_NAME" -o=go-template='{{index .metadata.labels "topology.kubernetes.io/zone"}}')
+      ZONE=$(kubectl get node "$NODE_NAME" -o=go-template='{{index .metadata.labels "failure-domain.beta.kubernetes.io/zone"}}')
       if [ "x$ZONE" == "x<no value>" ]; then
         SEDS+=("s/#init#broker.rack=#init#/#init#broker.rack=# zone label not found for node $NODE_NAME/")
       else
@@ -40,7 +41,6 @@ data:
     }
     printf '%s\n' "${SEDS[@]}" | sed -f - /etc/kafka-configmap/server.properties > /etc/kafka/server.properties.tmp
     [ $? -eq 0 ] && mv /etc/kafka/server.properties.tmp /etc/kafka/server.properties
-    ln -s /etc/kafka/server.properties /etc/kafka/server.properties.$POD_NAME
 
   server.properties: |-
     ############################# Log Basics #############################
@@ -166,7 +166,7 @@ data:
     zookeeper.connect=zookeeper:2181
 
     # Timeout in ms for connecting to zookeeper
-    #zookeeper.connection.timeout.ms=18000
+    #zookeeper.connection.timeout.ms=6000
 
 
     ############################# Group Coordinator Settings #############################

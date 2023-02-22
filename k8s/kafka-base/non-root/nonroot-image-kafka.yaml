@@ -5,11 +5,6 @@ metadata:
 spec:
   template:
     spec:
-      initContainers:
-      - name: init-config
-        image: solsson/kafka:initutils-nonroot@sha256:8988aca5b34feabe8d7d4e368f74b2ede398f692c7e99a38b262a938d475812c
       containers:
       - name: broker
-        image: solsson/kafka:2.5.1-kafka-server-start@sha256:e4d34530e500eb9724e7778595f4cb244df228336090bb7ed5f7dd7433d4d41d
-        args:
-        - /etc/kafka/server.properties.$(POD_NAME)
+        image: solsson/kafka:2.4.1-nonroot@sha256:ddfdd23081c075b86132f3e5d8e15389c78c4334dbb22166d9ad1d57f362007f
