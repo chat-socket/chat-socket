@@ -3,8 +3,6 @@ kind: Kustomization
 
 resources:
   - ingress.yaml
-
-bases:
   - kafka
   - user-management-db
   - user-management-service

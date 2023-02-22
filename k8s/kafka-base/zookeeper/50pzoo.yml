@@ -34,7 +34,7 @@ spec:
           mountPath: /var/lib/zookeeper
       containers:
       - name: zookeeper
-        image: solsson/kafka:2.4.1@sha256:79761e15919b4fe9857ec00313c9df799918ad0340b684c0163ab7035907bb5a
+        image: solsson/kafka:2.2.1@sha256:450c6fdacae3f89ca28cecb36b2f120aad9b19583d68c411d551502ee8d0b09b
         env:
         - name: KAFKA_LOG4J_OPTS
           value: -Dlog4j.configuration=file:/etc/kafka/log4j.properties
@@ -80,6 +80,7 @@ spec:
       name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
       resources:
         requests:
           storage: 1Gi
