@@ -23,6 +23,7 @@ configMapGenerator:
       - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html
 
 resources:
+  - namespaces.yaml
   - coredns.yaml
 
 images:
