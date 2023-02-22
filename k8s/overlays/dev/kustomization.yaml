@@ -10,9 +10,7 @@ secretGenerator:
       - identity_server.db.user=i_admin
       - identity_server.db.password=1f2d1*e@2e67df
       - user_management.db.user=u_admin
-      - user_management.db.password=8913JKHF*$$%
-      - artemis_server.broker.user=a_admin
-      - artemis_server.broker.password=kjshdf986+=%
+      - user_management.db.password=8913JKHF*78hdj
 
 configMapGenerator:
   - name: chat-socket
