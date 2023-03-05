@@ -26,6 +26,10 @@ images:
     newName: chatsocket/gateway-server
     newTag: 1.0.0-dev
 
+  - name: messaging-service
+    newName: chatsocket/messaging-service
+    newTag: 1.0.0-dev
+
   - name: identity-authorization-server
     newName: chatsocket/identity-authorization-server
     newTag: 1.0.0-dev
