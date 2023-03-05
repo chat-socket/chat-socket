@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-service
+  labels:
+    app: messaging-service
+spec:
+  selector:
+    matchLabels:
+      app: messaging-service
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: messaging-service
+    spec:
+      containers:
+        - name: messaging-service
+          image: 'messaging-service:latest'
+          ports:
+            - containerPort: 8080
+              name: ingress-port
+
+          env:
+            - name: USER_MANAGEMENT_SERVICE
+              value: "http://user-management-service"
+
+            - name: KAFKA_BROKER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: kafka_broker.uri
+
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /q/health/ready
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /q/health/live
+          resources:
+            requests:
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - messaging-service
+                topologyKey: kubernetes.io/chat-microservices

@@ -9,6 +9,7 @@ resources:
   - identity-authorization-db
   - identity-authorization-server
   - gateway-server
+  - messaging-service
   - websocket-server
   - web-frontend
 
