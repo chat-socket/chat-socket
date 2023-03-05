@@ -1,14 +1,6 @@
-bases:
-- ../../kafka-base/rbac-namespace-default
-- ../../kafka-base/kafka
-- ../../kafka-base/zookeeper
-patchesStrategicMerge:
-- kafka.yaml
-- zookeeper.yaml
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
-    kind: StatefulSet
-    name: kafka
-  path: kafka-scale2-overrides.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - strimzi.yaml
+  - kafka.yaml

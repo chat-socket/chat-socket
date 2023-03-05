@@ -20,7 +20,7 @@ configMapGenerator:
       - identity_server.issuer_uri=https://accounts.chat-socket.io
 
       - user_management.db.db_name=user-management-db
-      - kafka_broker.uri=bootstrap.kafka.svc.cluster.local:9092
+      - kafka_broker.uri=my-cluster-kafka-bootstrap:9092
 
       - web_client.uri=https://chat-socket.io
       - web_client.auth.redirect_uri=https://chat-socket.io/callback.html, https://chat-socket.io/silent-renew.html
