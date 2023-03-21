@@ -48,6 +48,12 @@ spec:
                   name: chat-socket
                   key: identity_server.internal_issuer_uri
 
+            - name: OAUTH2_EXTERNAL_ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: identity_server.external_issuer_uri
+
           lifecycle:
             preStop:
               exec:
