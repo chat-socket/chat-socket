@@ -46,11 +46,11 @@ spec:
 
             - name: USER_MANAGEMENT_SERVICE
               value: "http://user-management-service"
-            - name: AUTH_SERVICE_ISSUER_URI
+            - name: AUTH_EXTERNAL_ISSUER_URI
               valueFrom:
                 configMapKeyRef:
                   name: chat-socket
-                  key: identity_server.issuer_uri
+                  key: identity_server.external_issuer_uri
             - name: CHAT_CLIENT_REDIRECT_URI
               valueFrom:
                 configMapKeyRef:

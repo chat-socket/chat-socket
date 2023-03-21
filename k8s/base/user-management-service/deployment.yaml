@@ -46,7 +46,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: chat-socket
-                  key: identity_server.issuer_uri
+                  key: identity_server.internal_issuer_uri
 
           lifecycle:
             preStop:

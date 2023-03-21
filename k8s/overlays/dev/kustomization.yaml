@@ -13,12 +13,11 @@ configMapGenerator:
   - name: chat-socket
     behavior: merge
     literals:
-      - identity_server.issuer_uri=http://accounts.chat-socket.io
+      - identity_server.external_issuer_uri=http://accounts.chat-socket.io
       - web_client.uri=http://chat-socket.io
       - web_client.auth.redirect_uri=http://chat-socket.io/callback.html, http://chat-socket.io/silent-renew.html
 
 resources:
-  - coredns.yaml
   - ../../base
 
 images:
