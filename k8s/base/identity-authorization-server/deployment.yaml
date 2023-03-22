@@ -16,6 +16,16 @@ spec:
       labels:
         app: identity-authorization-server
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.28
+          command: ['sh', '-c', 'echo -e "Checking for the availability of DB Server deployment"; while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do sleep 1; printf "-"; done; echo -e "  >> DB Server has started";']
+          env:
+            - name: POSTGRES_HOST
+              value: 'identity-authorization-db'
+            - name: POSTGRES_PORT
+              value: 3306
+
       containers:
         - name: identity-authorization-server
           image: 'identity-authorization-server:latest'
@@ -27,6 +37,8 @@ spec:
           env:
             - name: POSTGRES_HOST
               value: 'identity-authorization-db'
+            - name: POSTGRES_PORT
+              value: 3306
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
