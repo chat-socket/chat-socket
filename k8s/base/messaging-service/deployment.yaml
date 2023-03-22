@@ -27,11 +27,17 @@ spec:
             - name: USER_MANAGEMENT_SERVICE
               value: "http://user-management-service"
 
-            - name: KAFKA_BROKER_URI
+            - name: KAFKA_BROKER_HOST
               valueFrom:
                 configMapKeyRef:
                   name: chat-socket
-                  key: kafka_broker.uri
+                  key: kafka_broker.host
+
+            - name: KAFKA_BROKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: kafka_broker.port
 
           lifecycle:
             preStop:
