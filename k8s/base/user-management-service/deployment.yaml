@@ -28,7 +28,7 @@ spec:
 
         - name: wait-for-oidc
           image: busybox:1.28
-          command: [ 'sh', '-c', 'until curl -sSf "$OAUTH2_ISSUER_URI" > /dev/null; do echo "Waiting for OIDC Server"; sleep 1; done; echo "OIDC Server has started"' ]
+          command: [ 'sh', '-c', 'until wget -q --spider "$OAUTH2_ISSUER_URI" > /dev/null; do echo "Waiting for OIDC Server"; sleep 1; done; echo "OIDC Server has started"' ]
           env:
             - name: OAUTH2_ISSUER_URI
               valueFrom:
