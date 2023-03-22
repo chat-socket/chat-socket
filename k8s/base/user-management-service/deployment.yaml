@@ -16,6 +16,27 @@ spec:
       labels:
         app: user-management-service
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.28
+          command: [ 'sh', '-c', 'echo -e "Waiting for DB Server"; while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do sleep 1; printf "-"; done; echo -e "  >> DB Server has started";' ]
+          env:
+            - name: POSTGRES_HOST
+              value: 'user-management-db'
+            - name: POSTGRES_PORT
+              value: "3306"
+
+        - name: wait-for-oidc
+          image: busybox:1.28
+          command: [ 'sh', '-c', 'echo -e "Waiting for OIDC Server"; while ! nc -z "$OAUTH2_ISSUER_URI" "$OAUTH2_ISSUER_PORT"; do sleep 1; printf "-"; done; echo -e "  >> OIDC Server has started";' ]
+          env:
+            - name: OAUTH2_ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: identity_server.internal_issuer_uri
+            - name: OAUTH2_ISSUER_PORT
+              value: "80"
       containers:
         - name: user-management-service
           image: 'user-management-service:latest'
@@ -25,6 +46,8 @@ spec:
           env:
             - name: POSTGRES_HOST
               value: 'user-management-db'
+            - name: POSTGRES_PORT
+              value: "3306"
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
@@ -66,11 +89,6 @@ spec:
             httpGet:
               port: 8080
               path: /q/health/live
-          resources:
-            requests:
-              memory: "512Mi"
-            limits:
-              memory: "512Mi"
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
