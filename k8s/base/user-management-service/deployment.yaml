@@ -28,15 +28,13 @@ spec:
 
         - name: wait-for-oidc
           image: busybox:1.28
-          command: [ 'sh', '-c', 'echo -e "Waiting for OIDC Server"; while ! nc -z "$OAUTH2_ISSUER_URI" "$OAUTH2_ISSUER_PORT"; do sleep 1; printf "-"; done; echo -e "  >> OIDC Server has started";' ]
+          command: [ 'sh', '-c', 'until curl -sSf "$OAUTH2_ISSUER_URI" > /dev/null; do echo "Waiting for OIDC Server"; sleep 1; done; echo "OIDC Server has started"' ]
           env:
             - name: OAUTH2_ISSUER_URI
               valueFrom:
                 configMapKeyRef:
                   name: chat-socket
                   key: identity_server.internal_issuer_uri
-            - name: OAUTH2_ISSUER_PORT
-              value: "80"
       containers:
         - name: user-management-service
           image: 'user-management-service:latest'
