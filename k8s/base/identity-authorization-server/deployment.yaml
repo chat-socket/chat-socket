@@ -24,7 +24,7 @@ spec:
             - name: POSTGRES_HOST
               value: 'identity-authorization-db'
             - name: POSTGRES_PORT
-              value: 3306
+              value: "3306"
 
       containers:
         - name: identity-authorization-server
@@ -38,7 +38,7 @@ spec:
             - name: POSTGRES_HOST
               value: 'identity-authorization-db'
             - name: POSTGRES_PORT
-              value: 3306
+              value: "3306"
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
