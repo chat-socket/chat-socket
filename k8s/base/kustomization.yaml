@@ -22,7 +22,7 @@ configMapGenerator:
       - identity_server.internal_issuer_uri=http://identity-authorization-server
 
       - user_management.db.db_name=user-management-db
-      - kafka_broker.host=my-cluster-kafka-bootstrap:9092
+      - kafka_broker.host=my-cluster-kafka-bootstrap
       - kafka_broker.port=9092
 
       - web_client.uri=https://chat-socket.io
