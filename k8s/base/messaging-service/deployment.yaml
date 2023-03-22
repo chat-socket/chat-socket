@@ -16,6 +16,22 @@ spec:
       labels:
         app: messaging-service
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.28
+          command: [ 'sh', '-c', 'echo -e "Waiting for Kafka Server"; while ! nc -z "$KAFKA_BROKER_HOST" "$KAFKA_BROKER_PORT"; do sleep 1; printf "-"; done; echo -e "  >> Kafka Server has started";' ]
+          env:
+            - name: KAFKA_BROKER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: kafka_broker.host
+
+            - name: KAFKA_BROKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chat-socket
+                  key: kafka_broker.port
       containers:
         - name: messaging-service
           image: 'messaging-service:latest'
